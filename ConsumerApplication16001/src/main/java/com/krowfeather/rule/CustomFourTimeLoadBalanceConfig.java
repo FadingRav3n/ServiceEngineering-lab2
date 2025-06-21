@@ -7,11 +7,11 @@ import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
-public class CustomThreeTimeLoadBalanceConfig {
+public class CustomFourTimeLoadBalanceConfig {
     @Bean
     ReactorLoadBalancer<ServiceInstance> randomLoadBalancer(Environment env, LoadBalancerClientFactory lbf){
         String name = env.getProperty(LoadBalancerClientFactory.PROPERTY_NAME);
 
-        return new ThreeTimeLoadBalancer(lbf.getLazyProvider(name, ServiceInstanceListSupplier.class), name);
+        return new FourTimeLoadBalancer(lbf.getLazyProvider(name, ServiceInstanceListSupplier.class), name);
     }
 }

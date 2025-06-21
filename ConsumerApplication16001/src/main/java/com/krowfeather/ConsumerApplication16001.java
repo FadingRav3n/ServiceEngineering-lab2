@@ -1,5 +1,6 @@
 package com.krowfeather;
 
+import com.krowfeather.rule.CustomFourTimeLoadBalanceConfig;
 import com.krowfeather.rule.CustomLoadBalanceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-@LoadBalancerClient(name="provider-service",configuration = CustomLoadBalanceConfig.class)
+//@LoadBalancerClient(name="provider-service",configuration = CustomLoadBalanceConfig.class)
+@LoadBalancerClient(name="provider-service",configuration = CustomFourTimeLoadBalanceConfig.class)
+
 public class ConsumerApplication16001 {
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication16001.class,args);

@@ -12,14 +12,15 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public class ThreeTimeLoadBalancer implements ReactorServiceInstanceLoadBalancer {
+public class FourTimeLoadBalancer implements ReactorServiceInstanceLoadBalancer {
     private int instance_call_count = 0; //已经被调用的次数
     private int instance_index = 0;//当前提供服务的实例
+    private static final int CALLS_PER_INSTANCE = 4; // 每个实例连续调用4次
     private final String serviceId;
     private ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSuppliers;
 
 
-    public ThreeTimeLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSuppliers, String serviceId) {
+    public FourTimeLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSuppliers, String serviceId) {
         this.serviceInstanceListSuppliers = serviceInstanceListSuppliers;
         this.serviceId = serviceId;
     }
@@ -37,7 +38,7 @@ public class ThreeTimeLoadBalancer implements ReactorServiceInstanceLoadBalancer
         int size = instances.size();
         ServiceInstance serviceInstance = null;
         while(serviceInstance == null){
-            if(this.instance_call_count<3){
+            if(this.instance_call_count < CALLS_PER_INSTANCE){
                 serviceInstance =instances.get(this.instance_index);
                 this.instance_call_count++;
             }
@@ -54,8 +55,4 @@ public class ThreeTimeLoadBalancer implements ReactorServiceInstanceLoadBalancer
 
         return new DefaultResponse(serviceInstance);
     }
-
-
-
-
 }
